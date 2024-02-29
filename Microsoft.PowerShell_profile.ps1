@@ -35,8 +35,8 @@ function GetCPUInformation {
 function GetOSVersion {
     $RegPath = "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
     # Windowsのバージョン(Windows XX XXXX)
-    $RegKey = "ProductName"
-    $ProductName = (Get-ItemProperty -Path $RegPath -name $RegKey).$RegKey
+    $ProductName = (Get-WmiObject Win32_OperatingSystem).Caption
+    $ProductName = $ProductName.Replace("Microsoft ", "")
     # Windowsのメジャーバージョン
     $RegKey = "CurrentBuild"
     $MajorNumber = (Get-ItemProperty -Path $RegPath -name $RegKey).$RegKey
@@ -58,6 +58,7 @@ function GetPowerShellVersion {
 }
 
 # 以下メイン処理
+Clear-Host
 Write-Host (GetOSVersion) -ForegroundColor Green
 Write-Host (GetCPUInformation) -ForegroundColor Green
 Write-Host (GetPowerShellVersion) -ForegroundColor Green
